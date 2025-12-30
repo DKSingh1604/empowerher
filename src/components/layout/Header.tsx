@@ -28,10 +28,8 @@ const Header = () => {
       <div className="container-main">
         <div className="flex items-center justify-between h-16 md:h-20">
           <Link to="/" className="flex items-center gap-2">
-            <div className="w-10 h-10 rounded-xl bg-primary flex items-center justify-center">
-              <span className="text-primary-foreground font-bold text-lg">E</span>
-            </div>
-            <span className="text-xl font-bold text-foreground">EmpowerHer</span>
+            <img src="/navIcon.png" alt="EmpowerHer" className="h-10 w-auto" />
+
           </Link>
 
           <nav className="hidden md:flex items-center gap-8">
@@ -99,7 +97,7 @@ const Header = () => {
               <Link to="/marketplace" className="text-foreground font-medium py-2" onClick={() => setMobileMenuOpen(false)}>
                 {t('nav.marketplace')}
               </Link>
-              
+
               <div className="pt-4 border-t border-border flex flex-col gap-3">
                 {isAuthenticated ? (
                   <>

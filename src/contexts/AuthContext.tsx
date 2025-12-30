@@ -134,6 +134,10 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         password,
         options: {
           emailRedirectTo: redirectUrl,
+          data: {
+            name,
+            role: selectedRole,
+          },
         },
       });
 
@@ -144,35 +148,8 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         return { success: false, error: error.message };
       }
 
-      if (data.user) {
-        // Create profile
-        const { error: profileError } = await supabase
-          .from('profiles')
-          .insert({
-            user_id: data.user.id,
-            name,
-            email,
-          });
-
-        if (profileError) {
-          console.error('Error creating profile:', profileError);
-          return { success: false, error: 'Failed to create user profile. Please try again.' };
-        }
-
-        // Create user role - cast to any to avoid type issues before regeneration
-        const { error: roleError } = await supabase
-          .from('user_roles')
-          .insert({
-            user_id: data.user.id,
-            role: selectedRole as string,
-          } as any);
-
-        if (roleError) {
-          console.error('Error creating role:', roleError);
-          return { success: false, error: 'Failed to assign user role. Please try again.' };
-        }
-
-        // Fetch the created data
+      // Profile and Role are now created automatically by Supabase Triggers
+      if (data.user && data.session) {
         await fetchUserData(data.user.id);
       }
 
