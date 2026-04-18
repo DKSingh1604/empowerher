@@ -19,8 +19,7 @@ const Header = () => {
   };
 
   const getDashboardLink = () => {
-    if (!role) return '/';
-    return role === 'entrepreneur' ? '/entrepreneur' : '/ngo';
+    return '/dashboard';
   };
 
   return (
@@ -42,6 +41,11 @@ const Header = () => {
             <Link to="/marketplace" className="text-muted-foreground hover:text-foreground transition-colors font-medium">
               {t('nav.marketplace')}
             </Link>
+            {isAuthenticated && (
+              <Link to="/dashboard" className="text-muted-foreground hover:text-foreground transition-colors font-medium">
+                {t('nav.dashboard')}
+              </Link>
+            )}
           </nav>
 
           <div className="hidden md:flex items-center gap-2">
@@ -50,9 +54,20 @@ const Header = () => {
             {isAuthenticated ? (
               <div className="flex items-center gap-2">
                 <Link to={getDashboardLink()}>
-                  <Button variant="ghost" size="sm" className="gap-2">
-                    <User className="w-4 h-4" />
-                    {profile?.name || 'Dashboard'}
+                  <Button variant="ghost" size="sm" className="gap-2 h-9 border border-border/50 hover:bg-secondary">
+                    <div className="w-6 h-6 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
+                      <User className="w-3.5 h-3.5 text-primary" />
+                    </div>
+                    <div className="flex flex-col items-start leading-none gap-0.5 max-w-[120px]">
+                      <span className="text-sm font-medium truncate w-full">{profile?.name || 'Dashboard'}</span>
+                      {role && (
+                        <span className={`text-[10px] uppercase font-bold tracking-wider ${
+                          role === 'ngo' ? 'text-blue-600 dark:text-blue-400' : 'text-primary'
+                        }`}>
+                          {role === 'ngo' ? 'NGO Partner' : 'Entrepreneur'}
+                        </span>
+                      )}
+                    </div>
                   </Button>
                 </Link>
                 <Button variant="outline" size="sm" onClick={handleLogout} className="gap-2">
@@ -102,7 +117,14 @@ const Header = () => {
                 {isAuthenticated ? (
                   <>
                     <Link to={getDashboardLink()} onClick={() => setMobileMenuOpen(false)}>
-                      <Button variant="default" className="w-full">{t('nav.dashboard')}</Button>
+                      <Button variant="default" className="w-full flex-col h-auto py-2">
+                        <span className="font-semibold">{t('nav.dashboard')}</span>
+                        {role && (
+                          <span className="text-[10px] uppercase opacity-80 tracking-widest mt-0.5">
+                            Signed in as {role === 'ngo' ? 'NGO Partner' : 'Entrepreneur'}
+                          </span>
+                        )}
+                      </Button>
                     </Link>
                     <Button variant="outline" className="w-full" onClick={() => { handleLogout(); setMobileMenuOpen(false); }}>
                       {t('nav.logout')}
