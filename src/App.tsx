@@ -17,6 +17,7 @@ import GrowthPage from "./pages/entrepreneur/GrowthPage";
 import NGODashboardPage from "./pages/ngo/NGODashboardPage";
 import FundingOverviewPage from "./pages/ngo/FundingOverviewPage";
 import NotFound from "./pages/NotFound";
+import { AiChatbot } from "@/components/chatbot/AiChatbot";
 
 const queryClient = new QueryClient();
 
@@ -117,6 +118,7 @@ const App = () => (
         <Sonner />
         <BrowserRouter>
           <AppRoutes />
+          <AiChatbot />
         </BrowserRouter>
       </TooltipProvider>
     </AuthProvider>
