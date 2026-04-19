@@ -12,6 +12,7 @@ EmpowerHer is a comprehensive platform designed to empower women entrepreneurs b
 - **Multilingual Support**: Built-in language switching capabilities to reach a wider audience.
 - **Dark/Light Mode**: Theme toggle for better user accessibility and preference.
 - **Secure Authentication**: Powered by Supabase for secure user management.
+- **AI Chatbot Assistant**: A globally available multilingual, intelligent assistant powered by Google Gemini, equipped with voice-to-text input to help users navigate the platform seamlessly.
 
 ## 🛠️ Tech Stack
 
@@ -23,6 +24,7 @@ EmpowerHer is a comprehensive platform designed to empower women entrepreneurs b
 - **Backend & Database**: [Supabase](https://supabase.com/)
 - **State Management**: React Context & [TanStack Query](https://tanstack.com/query/latest)
 - **Form Handling**: [React Hook Form](https://react-hook-form.com/) with [Zod](https://zod.dev/) validation
+- **AI Integration**: Google Gemini API integration and Web Speech API for voice recognition
 
 ## 📂 Project Structure
 
@@ -32,6 +34,7 @@ src/
 ├── components/          # Reusable UI components
 │   ├── landing/         # Landing page specific components
 │   ├── layout/          # Layout components (Header, Footer, etc.)
+│   ├── chatbot/         # AI Chatbot Assistant component
 │   └── ui/              # shadcn-ui primitive components
 ├── contexts/            # Global state contexts (Auth, Theme, Language)
 ├── data/                # Mock data for development
@@ -76,6 +79,7 @@ Follow these steps to set up the project locally.
     ```env
     VITE_SUPABASE_URL=your_supabase_url
     VITE_SUPABASE_ANON_KEY=your_supabase_anon_key
+    VITE_GEMINI_API_KEY=your_google_gemini_api_key
     ```
 
 4.  **Start the development server**
