@@ -107,10 +107,13 @@ export const AiChatbot = () => {
     setIsLoading(true);
 
     try {
-      const apiKey = import.meta.env.VITE_GEMINI_API_KEY;
+      let apiKey = import.meta.env.VITE_GEMINI_API_KEY;
       if (!apiKey) {
-        throw new Error("API configuration missing.");
+        throw new Error("Gemini API key is missing in .env file.");
       }
+      
+      // Sanitize key: remove leading/trailing quotes or whitespace that might be in .env
+      apiKey = apiKey.replace(/^["']|["']$/g, '').trim();
 
       const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`, {
         method: 'POST',
@@ -148,10 +151,19 @@ export const AiChatbot = () => {
     } catch (error: any) {
       console.error("AI Assistant Error:", error);
       
+      let errorText = "I am temporarily disconnected from the server. Please ensure your configuration is correct and try again.";
+      
+      // During development, show more helpful tips
+      if (error.message?.includes("API key")) {
+        errorText = "API Key error: Please check your .env file and ensure VITE_GEMINI_API_KEY is set correctly.";
+      } else if (error.message?.includes("model not found") || error.message?.includes("404")) {
+        errorText = "Model configuration error: The selected AI model might be unavailable in your region.";
+      }
+      
       const errorMessage: Message = {
         id: (Date.now() + 1).toString(),
         sender: 'ai',
-        text: "I am temporarily disconnected from the server. Please ensure your configuration is correct and try again."
+        text: errorText
       };
       setMessages(prev => [...prev, errorMessage]);
     } finally {
