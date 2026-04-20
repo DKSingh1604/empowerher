@@ -119,15 +119,19 @@ export const AiChatbot = () => {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
+          systemInstruction: {
+            role: 'system',
+            parts: [{ text: SYSTEM_PROMPT }]
+          },
           contents: [
             {
               role: 'user',
-              parts: [{ text: `${SYSTEM_PROMPT}\n\nUser: ${userMessage.text}` }]
+              parts: [{ text: userMessage.text }]
             }
           ],
           generationConfig: {
-            temperature: 0.5,
-            maxOutputTokens: 600,
+            temperature: 0.7,
+            maxOutputTokens: 2048,
           }
         })
       });
@@ -138,7 +142,9 @@ export const AiChatbot = () => {
         throw new Error(data.error?.message || "Connection failed.");
       }
 
-      const aiText = data.candidates?.[0]?.content?.parts?.[0]?.text || "I apologize, but I couldn't process your request.";
+      const aiText = data.candidates?.[0]?.content?.parts
+        ? data.candidates[0].content.parts.map((p: any) => p.text).join('')
+        : "I apologize, but I couldn't process your request.";
 
       const aiMessage: Message = {
         id: (Date.now() + 1).toString(),
